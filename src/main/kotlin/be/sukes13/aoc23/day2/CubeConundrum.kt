@@ -5,7 +5,7 @@ import be.sukes13.aoc23.day2.CubeColor.Companion.toCubeColor
 
 fun part1(input: String, toMatch: Map<CubeColor, Int>) =
     input.mapLines { it.toCubeGame() }
-        .filter { cubeGame -> cubeGame.isPossible(toMatch) }
+        .filter { it.isPossible(toMatch) }
         .sumOf { it.id }
 
 fun part2(input: String) =
