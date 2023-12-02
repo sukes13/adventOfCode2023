@@ -23,7 +23,7 @@ fun String.toCubeGame(): CubeGame {
 }
 
 private fun String.toCubeReveals() = split(";").map { setOfCubesString ->
-    setOfCubesString.trim()
+    setOfCubesString
         .split(", ")
         .map { revealString ->
             revealString.trim().split(" ").let {
