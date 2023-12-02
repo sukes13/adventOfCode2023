@@ -25,8 +25,8 @@ fun String.toCubeGame(): CubeGame {
 private fun String.toCubeReveals() = split(";").map { setOfCubesString ->
     setOfCubesString.trim()
         .split(", ")
-        .map { setOfCubes ->
-            setOfCubes.trim().split(" ").let {
+        .map { revealString ->
+            revealString.trim().split(" ").let {
                 it.last().toCubeColor() to it.first().toInt()
             }
         }
