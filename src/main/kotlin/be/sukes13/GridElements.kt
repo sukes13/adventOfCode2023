@@ -1,6 +1,6 @@
-package be.fgov.sfpd.kata.aoc23
+package be.sukes13
 
-import be.fgov.sfpd.kata.aoc23.Direction.*
+import be.sukes13.Direction.*
 
 
 typealias Grid<T> = Map<Int, List<T>>
