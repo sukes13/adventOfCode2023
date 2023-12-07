@@ -5,16 +5,17 @@ import be.sukes13.mapLines
 import kotlin.reflect.KClass
 
 fun part1(input: String) = input.mapLines { it.toHandAndBid() }
-    .sortedWith(HandComparator())
+    .calculateTotalWinnings()
+
+fun part2(input: String) = input.mapLines { it.toHandAndBid() }
+    .map { it.copy(hand = it.hand.upgradeIfJoker()) }
+    .also { println(it) }
+    .calculateTotalWinnings()
+
+private fun List<HandAndBid>.calculateTotalWinnings() =
+    sortedWith(HandComparator())
     .mapIndexed { index, handAndBid -> (index + 1) * handAndBid.bid }
     .sum()
-
-
-fun part2(input: String) = input.mapLines { it.toHandAndBid().also { println(it) } }
-    .sortedWith(HandComparator())
-    .mapIndexed { index, handAndBid -> (index + 1) * handAndBid.bid }
-    .sum()
-
 
 sealed interface Hand {
     val cards: List<Card>
@@ -118,7 +119,7 @@ internal fun List<Card>.toHandType() = when {
     isTwoPair() -> TwoPair(this)
     isOnePair() -> OnePair(this)
     else -> HighCard(this)
-}.upgradeIfJoker()
+}
 
 data class HandAndBid(val hand: Hand, val bid: Int)
 
