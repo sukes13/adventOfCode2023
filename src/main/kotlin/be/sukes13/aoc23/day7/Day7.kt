@@ -10,11 +10,36 @@ fun part1(input: String) = input.mapLines { it.toHandAndBid() }
     .sum()
 
 
-fun part2(input: String): Int = 0
+fun part2(input: String) = input.mapLines { it.toHandAndBid().also { println(it) } }
+    .sortedWith(HandComparator())
+    .mapIndexed { index, handAndBid -> (index + 1) * handAndBid.bid }
+    .sum()
 
 
 sealed interface Hand {
-    abstract val cards: List<Card>
+    val cards: List<Card>
+
+    fun upgradeIfJoker(): Hand {
+        return when (this) {
+            is FiveOfAKind -> this
+            is FourOfAKind -> if (cards.groupBy { it.code }
+                    .minBy { it.value.size }.value.first() == Card.JACK) FiveOfAKind(cards) else this
+
+            is FullHouse -> if (cards.groupBy { it.code }.minBy { it.value.size }.value.first() == Card.JACK) {
+                if (cards.count { it == Card.JACK } == 1) FourOfAKind(cards)
+                else FiveOfAKind(cards)
+            } else this
+
+            is ThreeOfAKind -> if (cards.groupBy { it.code }.minBy { it.value.size }.value.first() == Card.JACK) {
+                if (cards.count { it == Card.JACK } == 1) FourOfAKind(cards)
+                else FiveOfAKind(cards)
+            } else this
+
+            is TwoPair -> this
+            is OnePair -> this
+            is HighCard -> this
+        }
+    }
 
     data class FiveOfAKind(override val cards: List<Card>) : Hand
     data class FourOfAKind(override val cards: List<Card>) : Hand
@@ -69,11 +94,9 @@ internal fun List<Card>.isFullHouse() =
         groupedCardMap.containsCardAmount(3) && groupedCardMap.containsCardAmount(2)
     }
 
-internal fun List<Card>.isFourOfAKind() =
-    groupBy { it.code }.containsCardAmount(4)
+internal fun List<Card>.isFourOfAKind() = groupBy { it.code }.containsCardAmount(4)
 
-internal fun List<Card>.isFiveOfAKind() =
-    groupBy { it.code }.containsCardAmount(5)
+internal fun List<Card>.isFiveOfAKind() = groupBy { it.code }.containsCardAmount(5)
 
 private fun Map<Char, List<Card>>.containsCardAmount(amount: Int) = filter { it.value.size == amount }.isNotEmpty()
 
@@ -95,24 +118,24 @@ internal fun List<Card>.toHandType() = when {
     isTwoPair() -> TwoPair(this)
     isOnePair() -> OnePair(this)
     else -> HighCard(this)
-}
+}.upgradeIfJoker()
 
 data class HandAndBid(val hand: Hand, val bid: Int)
 
-enum class Card(val code: Char, val weight: Int) {
-    TWO('2', 1),
-    THREE('3', 2),
-    FOUR('4', 3),
-    FIVE('5', 4),
-    SIX('6', 5),
-    SEVEN('7', 6),
-    EIGHT('8', 7),
-    NINE('9', 8),
-    TEN('T', 9),
-    JACK('J', 10),
-    QUEEN('Q', 11),
-    KING('K', 12),
-    ACE('A', 13), ;
+enum class Card(val code: Char, val weight: Int, val weightPart2: Int) {
+    TWO('2', 1, 1),
+    THREE('3', 2, 2),
+    FOUR('4', 3, 3),
+    FIVE('5', 4, 4),
+    SIX('6', 5, 5),
+    SEVEN('7', 6, 6),
+    EIGHT('8', 7, 7),
+    NINE('9', 8, 8),
+    TEN('T', 9, 9),
+    JACK('J', 10, 0),
+    QUEEN('Q', 11, 11),
+    KING('K', 12, 12),
+    ACE('A', 13, 13), ;
 
     companion object {
         fun fromChar(char: Char) = values().single { it.code == char }
