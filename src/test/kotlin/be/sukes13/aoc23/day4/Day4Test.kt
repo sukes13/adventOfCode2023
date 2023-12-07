@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 class Day4Test {
     @Test
     fun `parse input`() {
+
         assertThat("").isEqualTo("")
     }
 }
