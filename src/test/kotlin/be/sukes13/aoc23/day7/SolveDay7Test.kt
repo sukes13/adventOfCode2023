@@ -27,6 +27,6 @@ class SolveDay7Test {
     @Test
     fun `actual input part 2`() {
         val input = readFile("aoc23/day7/input.txt")
-        assertThat(part2(input)).isEqualTo(0)
+        assertThat(part2(input)).isEqualTo(251421071)
     }
 }
