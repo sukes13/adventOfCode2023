@@ -1,4 +1,4 @@
-package be.sukes13.aoc23.day4
+package be.sukes13.aoc23.day12
 
 fun part1(input: String): Int = 0
 

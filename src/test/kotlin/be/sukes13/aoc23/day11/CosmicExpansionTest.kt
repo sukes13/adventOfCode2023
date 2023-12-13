@@ -5,7 +5,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 
-class Day11Test {
+class CosmicExpansionTest {
     @Test
     fun `parse input`() {
         val input = readFile("aoc23/day11/exampleInput.txt")
