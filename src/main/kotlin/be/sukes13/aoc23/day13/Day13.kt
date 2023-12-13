@@ -12,44 +12,43 @@ fun part2(input: String): Int = 0
 
 private fun Map<Int, List<Item>>.mirrorAt(): Int? {
     val rowMirror = neighbouringEqualRowsAt()
-        .singleOrNull { equalRows ->
-            isRowMirror(equalRows)
-        }?.plus(1)?.times(100)
+        .singleOrNull { isRowMirror(it) }
+        ?.plus(1)?.times(100)
 
     val columnMirror = neighbouringEqualColumnsAt()
-        .singleOrNull { equalColumns ->
-            isColumnMirror(equalColumns)
-        }?.plus(1)
+        .singleOrNull { isColumnMirror(it) }
+        ?.plus(1)
 
     return rowMirror ?: columnMirror
 }
 
-private fun Map<Int, List<Item>>.isColumnMirror(equalColumns: Int) =
-    mirroredAround(equalColumns).filterNot {
+private fun Map<Int, List<Item>>.isColumnMirror(equalColumn: Int) =
+    mirroredAround(equalColumn).filterNot {
         val columnOne = column(it.first)
         val columnTwo = column(it.second)
         columnOne.first() == null || columnTwo.first() == null || columnOne == columnTwo
     }.isEmpty()
 
-private fun Map<Int, List<Item>>.isRowMirror(equalRows: Int): Boolean {
-    return mirroredAround(equalRows).filterNot {
+private fun Map<Int, List<Item>>.isRowMirror(equalRow: Int) =
+    mirroredAround(equalRow).filterNot {
         val rowOne = this[it.first]
         val rowTwo = this[it.second]
         rowOne == null || rowTwo == null || rowOne == rowTwo
     }.isEmpty()
-}
 
 private fun Grid<Item>.mirroredAround(mirrorAt: Int) =
-    (0..size / 2).map { mirrorAt - (it + 1) to mirrorAt + (it + 2) }
+    (0 until size).map { mirrorAt - it to mirrorAt + it + 1 }
 
 private fun Grid<Item>.neighbouringEqualRowsAt(): List<Int> =
-    entries.zipWithNext().filter { (a, b) -> a.value == b.value }
+    entries.zipWithNext()
+        .filter { (a, b) -> a.value == b.value }
         .map { it.first.key }
 
 private fun Grid<Item>.neighbouringEqualColumnsAt(): List<Int> =
     (0 until values.first().size)
         .map { it to column(it) }
-        .zipWithNext().filter { (a, b) -> a.second == b.second }
+        .zipWithNext()
+        .filter { (a, b) -> a.second == b.second }
         .map { it.first.first }
 
 private fun List<String>.toValleys() =
