@@ -13,7 +13,8 @@ fun part2(input: String): Int = input.splitOnEmptyLine().toValleys().sumOf { it.
 private fun Map<Int, List<Item>>.mirrorAtWithSmudges(maxSmudges: Int = 0): Int? {
     val rowMirror = consecutiveEqualRowsAt()
         .singleOrNull { isRowMirror(it, maxSmudges) }
-        ?.plus(1)?.times(100)
+        ?.plus(1)
+        ?.times(100)
     val columnMirror = consecutiveEqualColumnsAt()
         .singleOrNull { isColumnMirror(it, maxSmudges) }
         ?.plus(1)

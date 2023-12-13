@@ -53,7 +53,6 @@ sealed interface Hand {
                 cards.count { it == JOKER } == 2 -> FourOfAKind(cards)
                 else -> this
             }
-
             is OnePair -> if (cards.count { it == JOKER }.let { it == 1 || it == 2 }) ThreeOfAKind(cards) else this
             is HighCard -> if (cards.contains(JOKER)) OnePair(cards) else this
         }
