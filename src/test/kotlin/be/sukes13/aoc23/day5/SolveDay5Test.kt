@@ -9,7 +9,7 @@ class SolveDay5Test {
     @Test
     fun `example input part 1`() {
         val input = readFile("aoc23/day5/exampleInput.txt")
-        assertThat(part1(input)).isEqualTo(6440)
+        assertThat(part1(input)).isEqualTo(35)
     }
 
     @Test
