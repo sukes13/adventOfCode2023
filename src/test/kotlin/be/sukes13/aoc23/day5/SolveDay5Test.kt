@@ -9,13 +9,20 @@ class SolveDay5Test {
     @Test
     fun `example input part 1`() {
         val input = readFile("aoc23/day5/exampleInput.txt")
-        assertThat(part1(input)).isEqualTo(35)
+        assertThat(part1(input)).isEqualTo(35L)
+    }
+
+
+    @Test
+    fun `example input part 3`() {
+        val input = readFile("aoc23/day5/exampleInput.txt")
+        assertThat(part3(input)).isEqualTo(35L)
     }
 
     @Test
     fun `actual input part 1`() {
         val input = readFile("aoc23/day5/input.txt")
-        assertThat(part1(input)).isEqualTo(825516882)
+        assertThat(part1(input)).isEqualTo(825516882L)
     }
 
     @Test
